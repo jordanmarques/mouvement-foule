@@ -84,3 +84,7 @@ function draw(data) {
         }
     }
 }
+
+function launch() {
+    //reste de l'algo
+}
