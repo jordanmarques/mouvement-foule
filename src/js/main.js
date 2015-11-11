@@ -1,31 +1,57 @@
-var ts = new Tileset("tiles.png");
+const ts = new Tileset("tiles.png");
+const FLOOR = 1;
+const WALL = 2;
+const GRASS = 3;
+const DOOR = 4;
+const MOUSE = 5;
+const CHEESE = 6;
+const TILES_SIZE = 30;
+
 
 window.onload = function() {
-
-    (function() {
-        var canvas = document.getElementById('canvas'),
-            context = canvas.getContext('2d');
-
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
         window.addEventListener('resize', resizeCanvas, false);
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-
-            drawStuff();
+            draw();
+        }
+        function draw() {
+            var ctx = canvas.getContext('2d');
+            ts.drawTile(FLOOR, ctx, 10, 40);
+            ts.drawTile(WALL, ctx, 10, 10);
+            ts.drawTile(GRASS, ctx, 40, 10);
+            ts.drawTile(DOOR, ctx, 130, 10);
+            ts.drawTile(MOUSE, ctx, 170, 10);
+            ts.drawTile(CHEESE, ctx, 210, 10);
         }
         resizeCanvas();
+};
 
-        function drawStuff() {
-            var ctx = canvas.getContext('2d');
-            ts.dessinerTile(1, ctx, 10, 10);
-            ts.dessinerTile(2, ctx, 50, 10);
-            ts.dessinerTile(3, ctx, 90, 10);
-            ts.dessinerTile(4, ctx, 130, 10);
-            ts.dessinerTile(5, ctx, 170, 10);
+document.getElementById('file').onchange = function() {
+    $.get('maps/'+$('#file').val().replace("C:\\fakepath\\", ""), function(data) {
+        console.log(data);
+
+        for(i; i<data.length; i++) {
+            switch(data.charAt(i)) {
+                case '*' :
+                    break;
+
+                case 'G' :
+                    break;
+
+                case ' ' :
+                    break;
+
+                case 'D' :
+                    break;
+
+                case 'A' :
+                    break;
+            }
         }
-    })();
 
-
-
+    })
 };
