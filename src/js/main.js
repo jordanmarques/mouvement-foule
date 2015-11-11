@@ -35,6 +35,7 @@ document.getElementById('file').onchange = function() {
 function draw(data) {
     var x = 10;
     var y  = 10;
+    var doorNumber = 0;
     for (var i = 0; i < data.length; i++) {
         switch (data.charAt(i)) {
             case '*' :
@@ -53,8 +54,14 @@ function draw(data) {
                 break;
 
             case 'D' :
-                ts.drawTile(DOOR, ctx, x, y);
-                x += TILES_SIZE;
+                if(doorNumber <= 2) {
+                    ts.drawTile(DOOR, ctx, x, y);
+                    x += TILES_SIZE;
+                    doorNumber += 1;
+                }else{
+                    ts.drawTile(FLOOR, ctx, x, y);
+                    x += TILES_SIZE;
+                }
                 break;
 
             case 'A' :
@@ -68,8 +75,8 @@ function draw(data) {
 
             case '\r' :
                 break;
-            default :
 
+            default :
                 ts.drawTile(FLOOR, ctx, x, y);
                 x += TILES_SIZE;
                 break;

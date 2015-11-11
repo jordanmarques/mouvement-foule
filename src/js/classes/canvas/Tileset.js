@@ -8,7 +8,7 @@ function Tileset(url) {
 		
 		// Largeur du tileset en tiles
 		this.referenceDuTileset.largeur = this.width / 32;
-	}
+	};
 	this.image.src = "tilesets/" + url;
 }
 
@@ -22,4 +22,4 @@ Tileset.prototype.drawTile = function(numero, context, xDestination, yDestinatio
 	var ySource = (ySourceEnTiles - 1) * 32;
 	
 	context.drawImage(this.image, xSource, ySource, 32, 32, xDestination, yDestination, 32, 32);
-}
+};
