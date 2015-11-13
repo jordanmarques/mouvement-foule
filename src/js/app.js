@@ -2,6 +2,7 @@ const ts = new Tileset("tiles.png");
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var textMap;
+var graph = [];
 const FLOOR = 1;
 const WALL = 2;
 const GRASS = 3;
@@ -36,21 +37,25 @@ function draw(data) {
     var x = 10;
     var y  = 10;
     var doorNumber = 0;
+    var graphLine=[];
     for (var i = 0; i < data.length; i++) {
         switch (data.charAt(i)) {
             case '*' :
                 ts.drawTile(WALL, ctx, x, y);
                 x += TILES_SIZE;
+                graphLine.push(0);
                 break;
 
             case 'G' :
                 ts.drawTile(GRASS, ctx, x, y);
                 x += TILES_SIZE;
+                graphLine.push(2);
                 break;
 
             case ' ' :
                 ts.drawTile(FLOOR, ctx, x, y);
                 x += TILES_SIZE;
+                graphLine.push(1);
                 break;
 
             case 'D' :
@@ -58,20 +63,25 @@ function draw(data) {
                     ts.drawTile(DOOR, ctx, x, y);
                     x += TILES_SIZE;
                     doorNumber += 1;
+                    graphLine.push(0);
                 }else{
                     ts.drawTile(FLOOR, ctx, x, y);
                     x += TILES_SIZE;
+                    graphLine.push(1);
                 }
                 break;
 
             case 'A' :
                 ts.drawTile(CHEESE, ctx, x, y);
                 x += TILES_SIZE;
+                graphLine.push(0);
                 break;
 
             case '\n' :
                 x = 10;
                 y += TILES_SIZE;
+                graph.push(graphLine);
+                graphLine=[];
 
             case '\r' :
                 break;
@@ -83,6 +93,7 @@ function draw(data) {
 
         }
     }
+    console.log(graph);
 }
 
 function launch() {
