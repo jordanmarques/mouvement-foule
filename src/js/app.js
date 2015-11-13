@@ -2,7 +2,8 @@ const ts = new Tileset("tiles.png");
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var textMap;
-var graph = [];
+var graphInBuild = [];
+var graph;
 var door1 = new Door();
 var door2 = new Door();
 const FLOOR = 1;
@@ -66,11 +67,9 @@ function draw(data) {
                     if(doorNumber == 0){
                         door1.x = (x-10)/30;
                         door1.y =  (y-10)/30;
-                        console.log(door1);
                     } else if(doorNumber == 1){
                         door2.x = (x-10)/30;
                         door2.y =  (y-10)/30;
-                        console.log(door2);
                     }
                     x += TILES_SIZE;
                     doorNumber += 1;
@@ -91,7 +90,7 @@ function draw(data) {
             case '\n' :
                 x = 10;
                 y += TILES_SIZE;
-                graph.push(graphLine);
+                graphInBuild.push(graphLine);
                 graphLine=[];
 
             case '\r' :
@@ -104,9 +103,13 @@ function draw(data) {
 
         }
     }
+    graph = new Graph(graphInBuild);
 }
 
 function launch() {
     var mouseAtDoor1 = $("#door1").val();
     var mouseAtDoor2 = $("#door2").val();
+    door1.initMouseStock(mouseAtDoor1);
+    door2.initMouseStock(mouseAtDoor2);
+    console.log(graph.grid.getFreePositionsArroundDoor(door2));
 }
