@@ -3,6 +3,8 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var textMap;
 var graph = [];
+var door1 = new Door();
+var door2 = new Door();
 const FLOOR = 1;
 const WALL = 2;
 const GRASS = 3;
@@ -61,6 +63,15 @@ function draw(data) {
             case 'D' :
                 if(doorNumber <= 2) {
                     ts.drawTile(DOOR, ctx, x, y);
+                    if(doorNumber == 0){
+                        door1.x = (x-10)/30;
+                        door1.y =  (y-10)/30;
+                        console.log(door1);
+                    } else if(doorNumber == 1){
+                        door2.x = (x-10)/30;
+                        door2.y =  (y-10)/30;
+                        console.log(door2);
+                    }
                     x += TILES_SIZE;
                     doorNumber += 1;
                     graphLine.push(0);
@@ -93,9 +104,9 @@ function draw(data) {
 
         }
     }
-    console.log(graph);
 }
 
 function launch() {
-    //reste de l'algo
+    var mouseAtDoor1 = $("#door1").val();
+    var mouseAtDoor2 = $("#door2").val();
 }
