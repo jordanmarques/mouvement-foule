@@ -37,8 +37,8 @@ document.getElementById('file').onchange = function() {
 };
 
 function draw(data) {
-    var x = 10;
-    var y  = 10;
+    var x = 0;
+    var y  = 0;
     var doorNumber = 0;
     var graphLine=[];
     for (var i = 0; i < data.length; i++) {
@@ -65,11 +65,11 @@ function draw(data) {
                 if(doorNumber <= 2) {
                     ts.drawTile(DOOR, ctx, x, y);
                     if(doorNumber == 0){
-                        door1.x = (x-10)/30;
-                        door1.y =  (y-10)/30;
+                        door1.x = x/30;
+                        door1.y =  y/30;
                     } else if(doorNumber == 1){
-                        door2.x = (x-10)/30;
-                        door2.y =  (y-10)/30;
+                        door2.x = x/30;
+                        door2.y = y/30;
                     }
                     x += TILES_SIZE;
                     doorNumber += 1;
@@ -84,11 +84,11 @@ function draw(data) {
             case 'A' :
                 ts.drawTile(CHEESE, ctx, x, y);
                 x += TILES_SIZE;
-                graphLine.push(0);
+                graphLine.push(1);
                 break;
 
             case '\n' :
-                x = 10;
+                x = 0;
                 y += TILES_SIZE;
                 graphInBuild.push(graphLine);
                 graphLine=[];
@@ -99,9 +99,13 @@ function draw(data) {
             default :
                 ts.drawTile(FLOOR, ctx, x, y);
                 x += TILES_SIZE;
+                graphLine.push(1);
                 break;
 
         }
+    }
+    if(graphLine.length != 0) {
+        graphInBuild.push(graphLine);
     }
     graph = new Graph(graphInBuild);
 }

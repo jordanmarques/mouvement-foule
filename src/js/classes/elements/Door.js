@@ -10,18 +10,18 @@ function Door(x, y) {
     this.mouseStock = [];
 }
 
-Graph.prototype.getFreePositionsArroundDoor = function (door) {
+Array.prototype.getFreePositionsArroundDoor = function (door) {
     var freePosition = [];
     var doorX = door.x;
     var doorY = door.y;
-    if (this[doorX-1][doorY-1] == 1 || this[doorX-1][doorY-1] == 2) freePosition.push(new Position(doorX-1, doorY-1));
-    if (this[doorX][doorY+1] == 1 || this[doorX][doorY+1] == 2) freePosition.push(new Position(doorX, doorY+1));
-    if (this[doorX+1][doorY-1] == 1 || this[doorX+1][doorY-1] == 2) freePosition.push(new Position(doorX+1, doorY-1));
-    if (this[doorX-1][doorY] == 1 || this[doorX-1][doorY] == 2) freePosition.push(new Position(doorX-1, doorY));
-    if (this[doorX+1][doorY] == 1 || this[doorX+1][doorY] == 2) freePosition.push(new Position(doorX+1, doorY));
-    if (this[doorX-1][doorY+1] == 1 || this[doorX-1][doorY+1] == 2) freePosition.push(new Position(doorX-1, doorY+1));
-    if (this[doorX][doorY-1] == 1 || this[doorX][doorY-1] == 2) freePosition.push(new Position(doorX, doorY-1));
-    if (this[doorX+1][doorY+1] == 1 || this[doorX+1][doorY+1] == 2) freePosition.push(new Position(doorX+1, doorY+1));
+    if (this[doorY-1][doorX-1].weight == 1 || this[doorY-1][doorX-1].weight == 2) freePosition.push(new Position(doorX-1, doorY-1));
+    if (this[doorY-1][doorX].weight == 1 || this[doorY-1][doorX].weight == 2) freePosition.push(new Position(doorX, doorY-1));
+    if (this[doorY-1][doorX+1].weight == 1 || this[doorY-1][doorX+1].weight == 2) freePosition.push(new Position(doorX+1, doorY-1));
+    if (this[doorY][doorX-1].weight == 1 || this[doorY][doorX-1].weight == 2) freePosition.push(new Position(doorX-1, doorY));
+    if (this[doorY][doorX+1].weight == 1 || this[doorY][doorX+1].weight == 2) freePosition.push(new Position(doorX+1, doorY));
+    if (this[doorY+1][doorX-1].weight == 1 || this[doorY+1][doorX-1].weight == 2) freePosition.push(new Position(doorX-1, doorY+1));
+    if (this[doorY+1][doorX].weight == 1 || this[doorY+1][doorX].weight == 2) freePosition.push(new Position(doorX, doorY+1));
+    if (this[doorY+1][doorX+1].weight == 1 || this[doorY+1][doorX+1].weight == 2) freePosition.push(new Position(doorX+1, doorY+1));
 
     return freePosition;
 };
