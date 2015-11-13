@@ -4,6 +4,7 @@ var ctx = canvas.getContext('2d');
 var textMap;
 var graphInBuild = [];
 var mousesOnMap = [];
+var cheeseOnMap = [];
 var graph;
 var door1 = new Door();
 var door2 = new Door();
@@ -84,8 +85,9 @@ function draw(data) {
 
             case 'A' :
                 ts.drawTile(CHEESE, ctx, x, y);
-                x += TILES_SIZE;
+                cheeseOnMap.push(new Cheese(x/30, y/30));
                 graphLine.push(1);
+                x += TILES_SIZE;
                 break;
 
             case '\n' :
@@ -116,44 +118,79 @@ function launch() {
     var mouseAtDoor2 = $("#door2").val();
     door1.initMouseStock(mouseAtDoor1);
     door2.initMouseStock(mouseAtDoor2);
-    door1.freePositions = graph.grid.getFreePositionsArroundDoor(door1);
-    door2.freePositions = graph.grid.getFreePositionsArroundDoor(door2);
 
-    var mouseStockD1Size = door1.mouseStock.length;
-    for(var i = 0; i < mouseStockD1Size; i++){
-        door1.freePositions = graph.grid.getFreePositionsArroundDoor(door1);
-        if(!door1.freePositions.length > 0){
-            break;
-        } else {
-            var newMouse = door1.mouseStock.pop();
-            var freePos = door1.freePositions.pop();
-            newMouse.x = freePos.x;
-            newMouse.y = freePos.y;
-            graph.grid[newMouse.y][newMouse.x].weight = 0;
-            ts.drawTile(MOUSE, ctx, newMouse.x*30,  newMouse.y*30);
-            mousesOnMap.push(newMouse);
+    do {
+        for(var i = 0; i < mousesOnMap.length; i++){
+            //var copyOfMousesOnMap = mousesOnMap;
+            var nextPosX = mousesOnMap[i].path[0].x;
+            var nextPosY = mousesOnMap[i].path[0].y;
 
-        }
-    }
+            //if(graph.grid[nextPosX][nextPosY].weight == 0){
+                ts.drawTile(MOUSE, ctx, nextPosY * 30, nextPosX * 30);
+                ts.drawTile(FLOOR, ctx, mousesOnMap[i].x * 30, mousesOnMap[i].y * 30);
+                graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 0;
+                graph.grid[nextPosX][nextPosY].weight = 1;
+                mousesOnMap[i].x = nextPosY;
+                mousesOnMap[i].y = nextPosX;
 
-    var mouseStockD2Size = door2.mouseStock.length;
-    for(var i = 0; i < mouseStockD2Size; i++){
-        door2.freePositions = graph.grid.getFreePositionsArroundDoor(door2);
-        if(!door2.freePositions.length > 0){
-            break;
-        } else {
-            var newMouse = door2.mouseStock.pop();
-            var freePos = door2.freePositions.pop();
-            newMouse.x = freePos.x;
-            newMouse.y = freePos.y;
-            graph.grid[newMouse.y][newMouse.x].weight = 0;
-            ts.drawTile(MOUSE, ctx, newMouse.x*30,  newMouse.y*30);
-            mousesOnMap.push(newMouse);
+                mousesOnMap[i].path.splice(0,1);
+                //if(mousesOnMap[i].path.length == 0){
+                //    copyOfMousesOnMap.splice(i,1);
+                //}
+            //}
 
         }
+        //mousesOnMap = copyOfMousesOnMap;
+
+        var mouseStockD1Size = door1.mouseStock.length;
+        for (var i = 0; i < mouseStockD1Size; i++) {
+
+            door1.freePositions = graph.grid.getFreePositionsArroundDoor(door1);
+            if (!door1.freePositions.length > 0) {
+                break;
+            } else {
+                var newMouse = door1.mouseStock.pop();
+                var freePos = door1.freePositions.pop();
+                newMouse.x = freePos.x;
+                newMouse.y = freePos.y;
+                newMouse.path = newMouse.ComputeShortestPath(cheeseOnMap);
+                graph.grid[newMouse.y][newMouse.x].weight = 0;
+                ts.drawTile(MOUSE, ctx, newMouse.x * 30, newMouse.y * 30);
+                mousesOnMap.push(newMouse);
+
+            }
+
+        }
+
+        var mouseStockD2Size = door2.mouseStock.length;
+        for (var i = 0; i < mouseStockD2Size; i++) {
+            door2.freePositions = graph.grid.getFreePositionsArroundDoor(door2);
+            if (!door2.freePositions.length > 0) {
+                break;
+            } else {
+                var newMouse = door2.mouseStock.pop();
+                var freePos = door2.freePositions.pop();
+                newMouse.x = freePos.x;
+                newMouse.y = freePos.y;
+                newMouse.path = newMouse.ComputeShortestPath(cheeseOnMap);
+                graph.grid[newMouse.y][newMouse.x].weight = 0;
+                ts.drawTile(MOUSE, ctx, newMouse.x * 30, newMouse.y * 30);
+                mousesOnMap.push(newMouse);
+
+            }
+        }
+        //sleep(500);
+    }while(mousesOnMap.length > 0)
+
+
+
+}
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+            break;
+        }
     }
-
-
-
-
 }
