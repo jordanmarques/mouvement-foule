@@ -2,12 +2,14 @@ function Door() {
     this.x = null;
     this.y = null;
     this.mouseStock = [];
+    this.isEmpty = false;
 }
 
 function Door(x, y) {
     this.x = x;
     this.y = y;
     this.mouseStock = [];
+    this.isEmpty = false;
 }
 
 Array.prototype.getFreePositionsArroundDoor = function (door) {

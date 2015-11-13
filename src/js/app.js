@@ -3,6 +3,7 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var textMap;
 var graphInBuild = [];
+var mousesOnMap = [];
 var graph;
 var door1 = new Door();
 var door2 = new Door();
@@ -115,5 +116,44 @@ function launch() {
     var mouseAtDoor2 = $("#door2").val();
     door1.initMouseStock(mouseAtDoor1);
     door2.initMouseStock(mouseAtDoor2);
-    console.log(graph.grid.getFreePositionsArroundDoor(door2));
+    door1.freePositions = graph.grid.getFreePositionsArroundDoor(door1);
+    door2.freePositions = graph.grid.getFreePositionsArroundDoor(door2);
+
+    var mouseStockD1Size = door1.mouseStock.length;
+    for(var i = 0; i < mouseStockD1Size; i++){
+        door1.freePositions = graph.grid.getFreePositionsArroundDoor(door1);
+        if(!door1.freePositions.length > 0){
+            break;
+        } else {
+            var newMouse = door1.mouseStock.pop();
+            var freePos = door1.freePositions.pop();
+            newMouse.x = freePos.x;
+            newMouse.y = freePos.y;
+            graph.grid[newMouse.y][newMouse.x].weight = 0;
+            ts.drawTile(MOUSE, ctx, newMouse.x*30,  newMouse.y*30);
+            mousesOnMap.push(newMouse);
+
+        }
+    }
+
+    var mouseStockD2Size = door2.mouseStock.length;
+    for(var i = 0; i < mouseStockD2Size; i++){
+        door2.freePositions = graph.grid.getFreePositionsArroundDoor(door2);
+        if(!door2.freePositions.length > 0){
+            break;
+        } else {
+            var newMouse = door2.mouseStock.pop();
+            var freePos = door2.freePositions.pop();
+            newMouse.x = freePos.x;
+            newMouse.y = freePos.y;
+            graph.grid[newMouse.y][newMouse.x].weight = 0;
+            ts.drawTile(MOUSE, ctx, newMouse.x*30,  newMouse.y*30);
+            mousesOnMap.push(newMouse);
+
+        }
+    }
+
+
+
+
 }
