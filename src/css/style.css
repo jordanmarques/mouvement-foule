@@ -11,5 +11,4 @@ html, body {
 
 canvas {
 	border: 1px solid black;
-	display:block;
 } /* To remove the scrollbars */

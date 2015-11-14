@@ -116,9 +116,9 @@ function draw(data) {
 }
 
 function launch() {
-    var mouseAtDoor1 = $("#door1").val();
-    var mouseAtDoor2 = $("#door2").val();
-    var speed = $("#speed").val();
+    if($("#door1").val() > 0) var mouseAtDoor1 = $("#door1").val();
+    if($("#door2").val() > 0) var mouseAtDoor2 = $("#door2").val();
+    if($("#speed").val() > 0) var speed = $("#speed").val();
     door1.initMouseStock(mouseAtDoor1);
     door2.initMouseStock(mouseAtDoor2);
 
@@ -129,28 +129,57 @@ function launch() {
                 var nextPosX = mousesOnMap[i].path[0].x;
                 var nextPosY = mousesOnMap[i].path[0].y;
 
-                if(graph.grid[nextPosX][nextPosY].weight != 0){
-                    ts.drawTile(MOUSE, ctx, nextPosY * TILES_SIZE, nextPosX * TILES_SIZE);
-                    ts.drawTile(FLOOR, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
-                    graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
-                    mousesOnMap[i].x = nextPosY;
-                    mousesOnMap[i].y = nextPosX;
-                    graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 0;
-                    mousesOnMap[i].path.splice(0,1);
-                    if(mousesOnMap[i].path.length == 0){
+                if( mousesOnMap[i].waiting){
+                    mousesOnMap[i].waiting = false;
+                }else{
+
+                    if(graph.grid[nextPosX][nextPosY].weight == 2){
+
+                        mousesOnMap[i].waiting = true;
+                        ts.drawTile(MOUSE, ctx, nextPosY * TILES_SIZE, nextPosX * TILES_SIZE);
+                        if(mousesOnMap[i].previousTiles == null){
+                            ts.drawTile(FLOOR, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
+                        }else{
+                            ts.drawTile(mousesOnMap[i].previousTiles, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
+                        }
                         graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
-                        mousesOnMap.splice(i,1);
-                        i--;
+                        mousesOnMap[i].x = nextPosY;
+                        mousesOnMap[i].y = nextPosX;
+                        graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 0;
+                        mousesOnMap[i].path.splice(0,1);
+                        mousesOnMap[i].previousTiles = GRASS;
+                        if(mousesOnMap[i].path.length == 0){
+                            graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
+                            mousesOnMap.splice(i,1);
+                            i--;
+                        }
+                    } else if(graph.grid[nextPosX][nextPosY].weight != 0){
+                        ts.drawTile(MOUSE, ctx, nextPosY * TILES_SIZE, nextPosX * TILES_SIZE);
+                        if(mousesOnMap[i].previousTiles == null){
+                            ts.drawTile(FLOOR, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
+                        }else{
+                            ts.drawTile(mousesOnMap[i].previousTiles, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
+                        }
+                        ts.drawTile(mousesOnMap[i].previousTiles, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
+                        graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
+                        mousesOnMap[i].x = nextPosY;
+                        mousesOnMap[i].y = nextPosX;
+                        graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 0;
+                        mousesOnMap[i].path.splice(0,1);
+                        mousesOnMap[i].previousTiles = FLOOR;
+                        if(mousesOnMap[i].path.length == 0){
+                            graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
+                            mousesOnMap.splice(i,1);
+                            i--;
+                        }
                     }
                 }
+
+
             }
             doorManagement(door1);
             doorManagement(door2);
-
-
         },speed);
-
-
     }while(mousesOnMap.length > 0);
 
     function doorManagement(door){
