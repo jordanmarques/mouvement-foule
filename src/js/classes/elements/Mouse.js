@@ -5,7 +5,7 @@ function Mouse(){
     this.waiting = false;
 }
 
-Mouse.prototype.ComputeShortestPath = function(arrayOfCheeses){
+Mouse.prototype.ComputeShortestPath = function(arrayOfCheeses, graph){
     var i = 0;
     var reference = astar.search(graph, graph.grid[this.y][this.x], graph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
     i++;

@@ -5,7 +5,6 @@ var textMap;
 var graphInBuild = [];
 var mousesOnMap = [];
 var cheeseOnMap = [];
-var outGoingMouses = [];
 var graph;
 var door1 = new Door();
 var door2 = new Door();
@@ -68,11 +67,11 @@ function draw(data) {
                 if(doorNumber <= 2) {
                     ts.drawTile(DOOR, ctx, x, y);
                     if(doorNumber == 0){
-                        door1.x = x/30;
-                        door1.y =  y/30;
+                        door1.x = x/TILES_SIZE;
+                        door1.y =  y/TILES_SIZE;
                     } else if(doorNumber == 1){
-                        door2.x = x/30;
-                        door2.y = y/30;
+                        door2.x = x/TILES_SIZE;
+                        door2.y = y/TILES_SIZE;
                     }
                     x += TILES_SIZE;
                     doorNumber += 1;
@@ -86,7 +85,7 @@ function draw(data) {
 
             case 'A' :
                 ts.drawTile(CHEESE, ctx, x, y);
-                cheeseOnMap.push(new Cheese(x/30, y/30));
+                cheeseOnMap.push(new Cheese(x/TILES_SIZE, y/TILES_SIZE));
                 graphLine.push(1);
                 x += TILES_SIZE;
                 break;
@@ -118,6 +117,7 @@ function launch() {
     var mouseAtDoor1 = $("#door1").val();
     var mouseAtDoor2 = $("#door2").val();
     var speed = $("#speed").val();
+    const immutableGraph = graph;
     door1.initMouseStock(mouseAtDoor1);
     door2.initMouseStock(mouseAtDoor2);
 
@@ -129,14 +129,15 @@ function launch() {
                 var nextPosY = mousesOnMap[i].path[0].y;
 
                 if(graph.grid[nextPosX][nextPosY].weight != 0){
-                    ts.drawTile(MOUSE, ctx, nextPosY * 30, nextPosX * 30);
-                    ts.drawTile(FLOOR, ctx, mousesOnMap[i].x * 30, mousesOnMap[i].y * 30);
+                    ts.drawTile(MOUSE, ctx, nextPosY * TILES_SIZE, nextPosX * TILES_SIZE);
+                    ts.drawTile(FLOOR, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
                     graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
-                    graph.grid[nextPosX][nextPosY].weight = 1;
                     mousesOnMap[i].x = nextPosY;
                     mousesOnMap[i].y = nextPosX;
+                    graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 0;
                     mousesOnMap[i].path.splice(0,1);
                     if(mousesOnMap[i].path.length == 0){
+                        graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
                         mousesOnMap.splice(i,1);
                         i--;
                     }
@@ -154,9 +155,9 @@ function launch() {
                     var freePos = door1.freePositions.pop();
                     newMouse1.x = freePos.x;
                     newMouse1.y = freePos.y;
-                    newMouse1.path = newMouse1.ComputeShortestPath(cheeseOnMap);
+                    newMouse1.path = newMouse1.ComputeShortestPath(cheeseOnMap, immutableGraph);
                     graph.grid[newMouse1.y][newMouse1.x].weight = 0;
-                    ts.drawTile(MOUSE, ctx, newMouse1.x * 30, newMouse1.y * 30);
+                    ts.drawTile(MOUSE, ctx, newMouse1.x * TILES_SIZE, newMouse1.y * TILES_SIZE);
                     mousesOnMap.push(newMouse1);
 
                 }
@@ -173,9 +174,9 @@ function launch() {
                     var freePos = door2.freePositions.pop();
                     newMouse2.x = freePos.x;
                     newMouse2.y = freePos.y;
-                    newMouse2.path = newMouse2.ComputeShortestPath(cheeseOnMap);
+                    newMouse2.path = newMouse2.ComputeShortestPath(cheeseOnMap, immutableGraph);
                     graph.grid[newMouse2.y][newMouse2.x].weight = 0;
-                    ts.drawTile(MOUSE, ctx, newMouse2.x * 30, newMouse2.y * 30);
+                    ts.drawTile(MOUSE, ctx, newMouse2.x * TILES_SIZE, newMouse2.y * TILES_SIZE);
                     mousesOnMap.push(newMouse2);
 
                 }
