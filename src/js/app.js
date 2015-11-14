@@ -6,6 +6,7 @@ var graphInBuild = [];
 var mousesOnMap = [];
 var cheeseOnMap = [];
 var graph;
+var immutableGraph;
 var door1 = new Door();
 var door2 = new Door();
 const FLOOR = 1;
@@ -111,13 +112,13 @@ function draw(data) {
         graphInBuild.push(graphLine);
     }
     graph = new Graph(graphInBuild);
+    immutableGraph = new Graph(graphInBuild);
 }
 
 function launch() {
     var mouseAtDoor1 = $("#door1").val();
     var mouseAtDoor2 = $("#door2").val();
     var speed = $("#speed").val();
-    const immutableGraph = graph;
     door1.initMouseStock(mouseAtDoor1);
     door2.initMouseStock(mouseAtDoor2);
 
@@ -143,47 +144,33 @@ function launch() {
                     }
                 }
             }
+            doorManagement(door1);
+            doorManagement(door2);
 
-            var mouseStockD1Size = door1.mouseStock.length;
-            for (var i = 0; i < mouseStockD1Size; i++) {
 
-                door1.freePositions = graph.grid.getFreePositionsArroundDoor(door1);
-                if (!door1.freePositions.length > 0) {
-                    break;
-                } else {
-                    var newMouse1 = door1.mouseStock.pop();
-                    var freePos = door1.freePositions.pop();
-                    newMouse1.x = freePos.x;
-                    newMouse1.y = freePos.y;
-                    newMouse1.path = newMouse1.ComputeShortestPath(cheeseOnMap, immutableGraph);
-                    graph.grid[newMouse1.y][newMouse1.x].weight = 0;
-                    ts.drawTile(MOUSE, ctx, newMouse1.x * TILES_SIZE, newMouse1.y * TILES_SIZE);
-                    mousesOnMap.push(newMouse1);
-
-                }
-
-            }
-
-            var mouseStockD2Size = door2.mouseStock.length;
-            for (var i = 0; i < mouseStockD2Size; i++) {
-                door2.freePositions = graph.grid.getFreePositionsArroundDoor(door2);
-                if (!door2.freePositions.length > 0) {
-                    break;
-                } else {
-                    var newMouse2 = door2.mouseStock.pop();
-                    var freePos = door2.freePositions.pop();
-                    newMouse2.x = freePos.x;
-                    newMouse2.y = freePos.y;
-                    newMouse2.path = newMouse2.ComputeShortestPath(cheeseOnMap, immutableGraph);
-                    graph.grid[newMouse2.y][newMouse2.x].weight = 0;
-                    ts.drawTile(MOUSE, ctx, newMouse2.x * TILES_SIZE, newMouse2.y * TILES_SIZE);
-                    mousesOnMap.push(newMouse2);
-
-                }
-            }
         },speed);
 
 
-    }while(mousesOnMap.length > 0)
+    }while(mousesOnMap.length > 0);
+
+    function doorManagement(door){
+        var mouseStockSize = door.mouseStock.length;
+        for (var i = 0; i < mouseStockSize; i++) {
+            door.freePositions = graph.grid.getFreePositionsArroundDoor(door);
+            if (!door.freePositions.length > 0) {
+                break;
+            } else {
+                var newMouse = door.mouseStock.pop();
+                var freePos = door.freePositions.pop();
+                newMouse.x = freePos.x;
+                newMouse.y = freePos.y;
+                newMouse.path = newMouse.ComputeShortestPath(cheeseOnMap, immutableGraph);
+                graph.grid[newMouse.y][newMouse.x].weight = 0;
+                ts.drawTile(MOUSE, ctx, newMouse.x * TILES_SIZE, newMouse.y * TILES_SIZE);
+                mousesOnMap.push(newMouse);
+
+            }
+        }
+    }
 
 }

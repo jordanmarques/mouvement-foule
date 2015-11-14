@@ -5,12 +5,12 @@ function Mouse(){
     this.waiting = false;
 }
 
-Mouse.prototype.ComputeShortestPath = function(arrayOfCheeses, graph){
+Mouse.prototype.ComputeShortestPath = function(arrayOfCheeses, immutableGraph){
     var i = 0;
-    var reference = astar.search(graph, graph.grid[this.y][this.x], graph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
+    var reference = astar.search(immutableGraph, immutableGraph.grid[this.y][this.x], immutableGraph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
     i++;
-    for(i; i < arrayOfCheeses.length; i++){
-        var number = astar.search(graph, graph.grid[this.y][this.x], graph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
+    for(i ; i < arrayOfCheeses.length; i++){
+        var number = astar.search(immutableGraph, immutableGraph.grid[this.y][this.x], immutableGraph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
         if(number.length < reference.length){
             reference = number;
         }
