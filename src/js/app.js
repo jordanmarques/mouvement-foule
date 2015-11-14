@@ -5,6 +5,7 @@ var textMap;
 var graphInBuild = [];
 var mousesOnMap = [];
 var cheeseOnMap = [];
+var outGoingMouses = [];
 var graph;
 var door1 = new Door();
 var door2 = new Door();
@@ -124,7 +125,6 @@ function launch() {
 
         window.setInterval(function(){
             for(var i = 0; i < mousesOnMap.length; i++){
-                //var copyOfMousesOnMap = mousesOnMap;
                 var nextPosX = mousesOnMap[i].path[0].x;
                 var nextPosY = mousesOnMap[i].path[0].y;
 
@@ -136,12 +136,12 @@ function launch() {
                     mousesOnMap[i].x = nextPosY;
                     mousesOnMap[i].y = nextPosX;
                     mousesOnMap[i].path.splice(0,1);
-                    //if(mousesOnMap[i].path.length == 0){
-                    //    graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 0;
-                    //}
+                    if(mousesOnMap[i].path.length == 0){
+                        mousesOnMap.splice(i,1);
+                        i--;
+                    }
                 }
             }
-            //mousesOnMap = copyOfMousesOnMap;
 
             var mouseStockD1Size = door1.mouseStock.length;
             for (var i = 0; i < mouseStockD1Size; i++) {
