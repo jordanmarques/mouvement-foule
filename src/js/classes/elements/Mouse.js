@@ -3,7 +3,8 @@ function Mouse(){
     this.y = null;
     this.path = null;
     this.waiting = false;
-    this.previousTiles = null;
+    this.previousTiles = null
+    this.grass = false;
 }
 
 Mouse.prototype.ComputeShortestPath = function(arrayOfCheeses, immutableGraph){

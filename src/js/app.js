@@ -17,14 +17,15 @@ const MOUSE = 5;
 const CHEESE = 6;
 const TILES_SIZE = 21;
 
+var canvasRef = document.getElementById('canvas');
 
 window.onload = function() {
         var context = canvas.getContext('2d');
         window.addEventListener('resize', resizeCanvas, false);
 
        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            canvas.width = 1200;
+            canvas.height = 500;
             if(textMap){
                 draw(textMap);
             }
@@ -142,6 +143,7 @@ function launch() {
                         }else{
                             ts.drawTile(mousesOnMap[i].previousTiles, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
                         }
+                        mousesOnMap[i].grass = true;
                         graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
                         mousesOnMap[i].x = nextPosY;
                         mousesOnMap[i].y = nextPosX;
@@ -161,7 +163,12 @@ function launch() {
                             ts.drawTile(mousesOnMap[i].previousTiles, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
                         }
                         ts.drawTile(mousesOnMap[i].previousTiles, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
-                        graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
+                        if(mousesOnMap[i].grass){
+                            graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 2;
+                        }else{
+                            graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
+                        }
+                        mousesOnMap[i].grass = false;
                         mousesOnMap[i].x = nextPosY;
                         mousesOnMap[i].y = nextPosX;
                         graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 0;
