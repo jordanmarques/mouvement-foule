@@ -1,3 +1,4 @@
+const TILES_SIZE_FULL = 22;
 function Tileset(url) {
 	// Chargement de l'image dans l'attribut image
 	this.image = new Image();
@@ -7,7 +8,7 @@ function Tileset(url) {
 			throw new Error("Erreur de chargement du tileset nommé \"" + url + "\".");
 		
 		// Largeur du tileset en tiles
-		this.referenceDuTileset.largeur = this.width / 32;
+		this.referenceDuTileset.largeur = this.width / TILES_SIZE_FULL;
 	};
 	this.image.src = "tilesets/" + url;
 }
@@ -18,8 +19,8 @@ Tileset.prototype.drawTile = function(numero, context, xDestination, yDestinatio
 	if(xSourceEnTiles == 0) xSourceEnTiles = this.largeur;
 	var ySourceEnTiles = Math.ceil(numero / this.largeur);
 	
-	var xSource = (xSourceEnTiles - 1) * 32;
-	var ySource = (ySourceEnTiles - 1) * 32;
+	var xSource = (xSourceEnTiles - 1) * TILES_SIZE_FULL;
+	var ySource = (ySourceEnTiles - 1) * TILES_SIZE_FULL;
 	
-	context.drawImage(this.image, xSource, ySource, 32, 32, xDestination, yDestination, 32, 32);
+	context.drawImage(this.image, xSource, ySource, TILES_SIZE_FULL, TILES_SIZE_FULL, xDestination, yDestination, TILES_SIZE_FULL, TILES_SIZE_FULL);
 };

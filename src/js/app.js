@@ -1,4 +1,4 @@
-const ts = new Tileset("tiles.png");
+const ts = new Tileset("tiles-22.png");
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var textMap;
@@ -15,21 +15,21 @@ const GRASS = 3;
 const DOOR = 4;
 const MOUSE = 5;
 const CHEESE = 6;
-const TILES_SIZE = 30;
+const TILES_SIZE = 21;
 
 
 window.onload = function() {
         var context = canvas.getContext('2d');
         window.addEventListener('resize', resizeCanvas, false);
 
-        function resizeCanvas() {
+       function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             if(textMap){
                 draw(textMap);
             }
-        }
-        resizeCanvas();
+       }
+    resizeCanvas();
 };
 
 document.getElementById('file').onchange = function() {
