@@ -120,22 +120,26 @@ function launch() {
     if($("#door1").val() > 0) var mouseAtDoor1 = $("#door1").val();
     if($("#door2").val() > 0) var mouseAtDoor2 = $("#door2").val();
     if($("#speed").val() > 0) var speed = $("#speed").val();
+
+    var tour = 1;
+    var mouves = 0;
+    var mousesDone = 0;
+
     door1.initMouseStock(mouseAtDoor1);
     door2.initMouseStock(mouseAtDoor2);
 
-    do {
 
-        window.setInterval(function(){
+        var id = window.setInterval(function(){
+            tour++;
             for(var i = 0; i < mousesOnMap.length; i++){
                 var nextPosX = mousesOnMap[i].path[0].x;
                 var nextPosY = mousesOnMap[i].path[0].y;
-
                 if( mousesOnMap[i].waiting){
                     mousesOnMap[i].waiting = false;
                 }else{
 
                     if(graph.grid[nextPosX][nextPosY].weight == 2){
-
+                        mouves ++;
                         mousesOnMap[i].waiting = true;
                         ts.drawTile(MOUSE, ctx, nextPosY * TILES_SIZE, nextPosX * TILES_SIZE);
                         if(mousesOnMap[i].previousTiles == null){
@@ -154,8 +158,10 @@ function launch() {
                             graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
                             mousesOnMap.splice(i,1);
                             i--;
+                            mousesDone ++;
                         }
                     } else if(graph.grid[nextPosX][nextPosY].weight != 0){
+                        mouves ++;
                         ts.drawTile(MOUSE, ctx, nextPosY * TILES_SIZE, nextPosX * TILES_SIZE);
                         if(mousesOnMap[i].previousTiles == null){
                             ts.drawTile(FLOOR, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
@@ -178,16 +184,27 @@ function launch() {
                             graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 1;
                             mousesOnMap.splice(i,1);
                             i--;
+                            mousesDone ++;
                         }
                     }
                 }
+                if(mousesOnMap.length >= 0){
+                    $("#tour").text(tour);
+                    $("#deplacements").text(mouves);
+                    $("#sourisTerrain").text(mousesOnMap.length);
+                    $("#sourisArrivee").text(mousesDone);
 
+                }
+            }
+            if(mousesOnMap.length >= 0){
+                $("#deplacements").text(mouves);
+                $("#sourisTerrain").text(mousesOnMap.length);
+                $("#sourisArrivee").text(mousesDone);
 
             }
             doorManagement(door1);
             doorManagement(door2);
         },speed);
-    }while(mousesOnMap.length > 0);
 
     function doorManagement(door){
         var mouseStockSize = door.mouseStock.length;

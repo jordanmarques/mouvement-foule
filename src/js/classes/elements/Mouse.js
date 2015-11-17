@@ -13,9 +13,12 @@ Mouse.prototype.ComputeShortestPath = function(arrayOfCheeses, immutableGraph){
     i++;
     for(i ; i < arrayOfCheeses.length; i++){
         var number = astar.search(immutableGraph, immutableGraph.grid[this.y][this.x], immutableGraph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
-        if(number.length < reference.length){
-            reference = number;
+        if(!(number.length == 0 || reference.length == 0)){
+            if(number.length < reference.length){
+                reference = number;
+            }
         }
+
     }
     return reference;
 };

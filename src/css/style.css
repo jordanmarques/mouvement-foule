@@ -12,3 +12,7 @@ html, body {
 canvas {
 	border: 1px solid black;
 } /* To remove the scrollbars */
+
+.bold{
+	font-weight: bold;
+}
