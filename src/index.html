@@ -14,23 +14,25 @@
 
     <canvas id="canvas">Votre navigateur ne supporte pas HTML5</canvas>
 
-    <br>
 
-    <label for="file">Porte 1</label>
-    <input type="number" id="door1"/>
+    <div class="canvas-bottom">
+        <label for="file">Porte 1</label>
+        <input type="number" id="door1"/>
 
-    <label for="file">Porte 2</label>
-    <input type="number" id="door2"/>
+        <label for="file">Porte 2</label>
+        <input type="number" id="door2"/>
 
-    <label for="file">Vitesse</label>
-    <input type="number" id="speed"/>
+        <label for="file">Vitesse</label>
+        <input type="number" id="speed"/>
 
-    <button onclick="launch()">Lancer</button>
-    <br>
-    <span class="bold">Tour:</span><span id="tour"></span>
-    <span class="bold">Déplacements:</span><span id="deplacements"></span>
-    <span class="bold">Souris sur le terrain:</span><span id="sourisTerrain"></span>
-    <span class="bold">Souris arrivées:</span><span id="sourisArrivee"></span>
+        <button onclick="launch()">Lancer</button>
+    </div>
+    <div class="canvas-bottom">
+        <span class="counter">Tour: <span class="circle" id="tour"></span></span>
+        <span class="counter">Déplacements: <span class="circle" id="deplacements"></span></span>
+        <span class="counter">Souris sur le terrain: <span class="circle" id="sourisTerrain"></span></span>
+        <span class="counter">Souris arrivées: <span class="circle" id="sourisArrivee"></span></span>
+    </div>
 </body>
 
 <script type="text/javascript" src="lib/jquery.js"></script>

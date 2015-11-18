@@ -2,18 +2,30 @@
 	margin:0;
 	padding:0;
 	font-family: Helvetica Neue, Arial, serif
-} /* to remove the top and left whitespace */
+}
 
 html, body {
 	width:100%;
 	height:100%;
-} /* just to be sure these are full screen*/
+}
 
 canvas {
 	border: 1px solid black;
-} /* To remove the scrollbars */
+}
 
-.bold{
+.counter{
 	font-weight: bold;
-	margin:10px;
+	margin: 10px;
+}
+
+.canvas-bottom{
+	margin-top: 5px;
+}
+
+.circle{
+	margin: 10px;
+	border-radius: 20%;
+	background-color: darkgreen;
+	color: white;
+	font-weight: normal;
 }

@@ -26,6 +26,8 @@ window.onload = function() {
        function resizeCanvas() {
             canvas.width = 1200;
             canvas.height = 500;
+            $("#canvas").css("margin-left",(window.innerWidth - canvas.width)/2);
+            $(".canvas-bottom").css("margin-left",(window.innerWidth - canvas.width)/2);
             if(textMap){
                 draw(textMap);
             }
@@ -66,7 +68,7 @@ function draw(data) {
                 break;
 
             case 'D' :
-                if(doorNumber <= 2) {
+                if(doorNumber < 2) {
                     ts.drawTile(DOOR, ctx, x, y);
                     if(doorNumber == 0){
                         door1.x = x/TILES_SIZE;
@@ -76,7 +78,7 @@ function draw(data) {
                         door2.y = y/TILES_SIZE;
                     }
                     x += TILES_SIZE;
-                    doorNumber += 1;
+                    doorNumber ++;
                     graphLine.push(0);
                 }else{
                     ts.drawTile(FLOOR, ctx, x, y);
@@ -120,6 +122,7 @@ function launch() {
     if($("#door1").val() > 0) var mouseAtDoor1 = $("#door1").val();
     if($("#door2").val() > 0) var mouseAtDoor2 = $("#door2").val();
     if($("#speed").val() > 0) var speed = $("#speed").val();
+    $(".circle").css("padding-left","2px").css("padding-right","2px");
 
     var tour = 1;
     var mouves = 0;
