@@ -171,7 +171,6 @@ function launch() {
                         }else{
                             ts.drawTile(mousesOnMap[i].previousTiles, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
                         }
-                        ts.drawTile(mousesOnMap[i].previousTiles, ctx, mousesOnMap[i].x * TILES_SIZE, mousesOnMap[i].y * TILES_SIZE);
                         if(mousesOnMap[i].grass){
                             graph.grid[mousesOnMap[i].y][mousesOnMap[i].x].weight = 2;
                         }else{
