@@ -9,10 +9,10 @@ function Mouse(){
 
 Mouse.prototype.ComputeShortestPath = function(arrayOfCheeses, immutableGraph){
     var i = 0;
-    var reference = astar.search(immutableGraph, immutableGraph.grid[this.y][this.x], immutableGraph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
+    var reference = Astar.search(immutableGraph, immutableGraph.grid[this.y][this.x], immutableGraph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
     i++;
     for(i ; i < arrayOfCheeses.length; i++){
-        var number = astar.search(immutableGraph, immutableGraph.grid[this.y][this.x], immutableGraph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
+        var number = Astar.search(immutableGraph, immutableGraph.grid[this.y][this.x], immutableGraph.grid[arrayOfCheeses[i].y][arrayOfCheeses[i].x]);
         if(!(number.length == 0 || reference.length == 0)){
             if(number.length < reference.length){
                 reference = number;

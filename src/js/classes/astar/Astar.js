@@ -5,7 +5,7 @@
         define([], definition);
     } else {
         var exports = definition();
-        window.astar = exports.astar;
+        window.Astar = exports.Astar;
         window.Graph = exports.Graph;
     }
 })(function() {
@@ -25,32 +25,22 @@
         });
     }
 
-    var astar = {
-        search: function(graph, start, end, options) {
+    var Astar = {
+        search: function(graph, start, end) {
             graph.cleanDirty();
-            options = options || {};
-            var heuristic = options.heuristic || astar.heuristics.front,
-                closest = options.closest || false;
-
-            var openHeap = getHeap(),
-                closestNode = start;
-
+            var heuristic = Astar.heuristics.front;
+            var closest = false;
+            var openHeap = getHeap();
+            var closestNode = start;
             start.h = heuristic(start, end);
-
             openHeap.push(start);
-
             while(openHeap.size() > 0) {
-
                 var currentNode = openHeap.pop();
-
                 if(currentNode === end) {
                     return pathTo(currentNode);
                 }
-
                 currentNode.closed = true;
-
                 var neighbors = graph.neighbors(currentNode);
-
                 for (var i = 0, il = neighbors.length; i < il; ++i) {
                     var neighbor = neighbors[i];
 
@@ -115,10 +105,8 @@
         }
     };
 
-    function Graph(gridIn, options) {
-        options = options || {};
+    function Graph(gridIn) {
         this.nodes = [];
-        this.diagonal = !!options.diagonal;
         this.grid = [];
         for (var x = 0; x < gridIn.length; x++) {
             this.grid[x] = [];
@@ -135,13 +123,13 @@
     Graph.prototype.init = function() {
         this.dirtyNodes = [];
         for (var i = 0; i < this.nodes.length; i++) {
-            astar.cleanNode(this.nodes[i]);
+            Astar.cleanNode(this.nodes[i]);
         }
     };
 
     Graph.prototype.cleanDirty = function() {
         for (var i = 0; i < this.dirtyNodes.length; i++) {
-            astar.cleanNode(this.dirtyNodes[i]);
+            Astar.cleanNode(this.dirtyNodes[i]);
         }
         this.dirtyNodes = [];
     };
@@ -159,37 +147,29 @@
         if(grid[x-1] && grid[x-1][y]) {
             ret.push(grid[x-1][y]);
         }
-
         if(grid[x+1] && grid[x+1][y]) {
             ret.push(grid[x+1][y]);
         }
-
         if(grid[x] && grid[x][y-1]) {
             ret.push(grid[x][y-1]);
         }
-
         if(grid[x] && grid[x][y+1]) {
             ret.push(grid[x][y+1]);
         }
-
         if (this.diagonal) {
             if(grid[x-1] && grid[x-1][y-1]) {
                 ret.push(grid[x-1][y-1]);
             }
-
             if(grid[x+1] && grid[x+1][y-1]) {
                 ret.push(grid[x+1][y-1]);
             }
-
             if(grid[x-1] && grid[x-1][y+1]) {
                 ret.push(grid[x-1][y+1]);
             }
-
             if(grid[x+1] && grid[x+1][y+1]) {
                 ret.push(grid[x+1][y+1]);
             }
         }
-
         return ret;
     };
 
@@ -334,7 +314,7 @@
     };
 
     return {
-        astar: astar,
+        Astar: Astar,
         Graph: Graph
     };
 
